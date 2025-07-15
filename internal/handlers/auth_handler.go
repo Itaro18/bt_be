@@ -34,8 +34,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, _ := utils.GenerateJWT(u.UserID)
+	token, err := utils.GenerateJWT(u.UserID)
+	if err != nil {
+		log.Printf("❌ Error generating JWT: %v", err)
+	}
+	log.Println("Generated token:", token)
 	w.Header().Set("Content-Type", "application/json")
-	log.Print(token)
 	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }
