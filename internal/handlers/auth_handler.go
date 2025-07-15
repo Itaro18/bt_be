@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/Itaro18/bt_be/internal/db"
@@ -35,5 +36,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	token, _ := utils.GenerateJWT(u.UserID)
 	w.Header().Set("Content-Type", "application/json")
+	log.Print(token)
 	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }
