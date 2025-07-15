@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = os.Getenv("JWT_SECRET") // move to ENV for production
+var jwtSecret = []byte(os.Getenv("JWT_SECRET")) // ✅ CORRECT
 
 func GenerateJWT(userID string) (string, error) {
 	claims := jwt.MapClaims{
@@ -24,7 +24,7 @@ func ValidateJWT(tokenStr string) (jwt.MapClaims, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		return jwtSecret, nil
+		return jwtSecret, nil // ✅ CORRECT: []byte
 	})
 	if err != nil || !token.Valid {
 		return nil, errors.New("invalid token")
