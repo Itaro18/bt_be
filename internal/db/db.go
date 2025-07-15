@@ -14,16 +14,16 @@ var DB *gorm.DB
 
 func Init() error {
 	utils.LoadEnv()
-    dsn := os.Getenv("DATABASE_URL")
-    var err error
+	dsn := os.Getenv("DATABASE_URL")
+	var err error
 
-    DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-    if err != nil {
-        log.Fatal("❌ Failed to connect to DB:", err)
-    }
-	DB = DB.Debug()
-    // Auto-migrate all models
-    // Auto-migrate one by one to avoid dependency issues
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("❌ Failed to connect to DB:", err)
+	}
+	// DB = DB.Debug()
+	// Auto-migrate all models
+	// Auto-migrate one by one to avoid dependency issues
 	if err := DB.AutoMigrate(&models.User{}); err != nil {
 		log.Fatal("❌ User migration failed:", err)
 	}
@@ -37,7 +37,6 @@ func Init() error {
 		log.Fatal("❌ Booking migration failed:", err)
 	}
 
-
-    log.Println("✅ Database connected and migrated")
+	log.Println("✅ Database connected and migrated")
 	return nil
 }

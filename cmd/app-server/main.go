@@ -22,6 +22,10 @@ func main() {
 		Port        = os.Getenv("PORT")
 		FrontendURL = os.Getenv("FRONTEND_URL")
 	)
+	err := db.Init()
+	if err != nil {
+		log.Fatalf("failed to initialize database: %v", err)
+	}
 
 	r := chi.NewRouter()
 	r.Use(chi_m.RequestID)
@@ -58,9 +62,5 @@ func main() {
 
 	fmt.Println("server started on 8080")
 
-	err := db.Init()
-	if err != nil {
-		log.Fatalf("failed to initialize database: %v", err)
-	}
 	http.ListenAndServe(Port, r)
 }
